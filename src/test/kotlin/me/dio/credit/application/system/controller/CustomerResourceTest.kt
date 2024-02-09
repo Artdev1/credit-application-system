@@ -26,14 +26,12 @@ import java.util.Random
 @AutoConfigureMockMvc
 @ContextConfiguration
 class CustomerResourceTest {
-  @Autowired
-  private lateinit var customerRepository: CustomerRepository
+  
+  @Autowired private lateinit var customerRepository: CustomerRepository
 
-  @Autowired
-  private lateinit var mockMvc: MockMvc
+  @Autowired private lateinit var mockMvc: MockMvc
 
-  @Autowired
-  private lateinit var objectMapper: ObjectMapper
+  @Autowired private lateinit var objectMapper: ObjectMapper
 
   companion object {
     const val URL: String = "/api/customers"
@@ -67,6 +65,13 @@ class CustomerResourceTest {
       .andExpect(MockMvcResultMatchers.jsonPath("$.street").value("Rua da Cami, 123"))
       .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
       .andDo(MockMvcResultHandlers.print())
+  }
+  @Test
+  fun `should check server status and return 200 status`() {
+    mockMvc.perform(
+      MockMvcRequestBuilders.get(URL)
+    )
+      .andExpect(MockMvcResultMatchers.status().isOk)
   }
 
   @Test
